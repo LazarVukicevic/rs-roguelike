@@ -185,8 +185,6 @@ int main(int argc, char *argv[])
 			if (nextY > 0 && nextY < rows-1 && nextX > 0 && nextX < cols-1 && map[nextY][nextX] == ' ') {
 				playerY = nextY;
 				playerX = nextX;
-				// player.set_player_y(nextY);
-				// player.set_player_x(nextX);
 			}
 		}
 

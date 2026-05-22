@@ -27,21 +27,6 @@ Direction Player::get_player_direction() {
     return player_direction_;
 }
 
-// char Player::ScanAdjacent(std::vector<std::string> &map, Direction direction) {
-//     if (direction == Direction::Up) {
-// 		return map[player_y_-1][player_x_];
-// 	}
-// 	else if (direction == Direction::Right) {
-// 		return map[player_y_][player_x_+1];
-// 	}
-// 	else if (direction == Direction::Down) {
-// 		return map[player_y_+1][player_x_];
-// 	}
-// 	else if (direction == Direction::Left) {
-// 		return map[player_y_][player_x_-1];
-// 	}
-// }
-
 
 void Player::set_player_direction(Direction new_direction) {
     player_direction_ = new_direction;
