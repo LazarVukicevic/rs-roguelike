@@ -1,8 +1,8 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall
+CXXFLAGS = -std=c++17 -Wall -Isrc
 LDFLAGS = -lncurses
 
-SRCS = main.cpp game.cpp player.cpp player_controller.cpp map.cpp
+SRCS = src/main.cpp src/game.cpp src/player.cpp src/player_controller.cpp src/map.cpp
 TARGET = roguelike
 
 $(TARGET): $(SRCS)
