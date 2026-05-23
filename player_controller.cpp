@@ -1,20 +1,44 @@
 #include "player_controller.h"
 
-void PlayerController::ChopTree(Player &player) {
-    player.gain_xp(Skill::Woodcutting, 25);
+PlayerController::PlayerController(Player& player, Map& map) : player_(player), map_(map) { }
+
+bool PlayerController::IsTree() {
+	return 
+		map_.GetAdjacentTile(player_.GetY(), player_.GetX(), player_.GetDirection()) == 'T';
 }
 
-char PlayerController::ScanAdjacent(Player &player, std::vector<std::string> &map, Direction direction) {
-    if (direction == Direction::Up) {
-		return map[player.get_player_y()-1][player.get_player_x()];
+bool PlayerController::ChopTree() {
+	if(!IsTree()) {
+		return false;
 	}
-	else if (direction == Direction::Right) {
-		return map[player.get_player_y()][player.get_player_x()+1];
+    player_.GainXp(Skill::Woodcutting, 25);
+	return true;
+}
+
+void PlayerController::MoveUp() {
+	player_.SetDirection(Direction::Up);
+	if (map_.IsWalkable(player_.GetY()-1, player_.GetX())) {
+		player_.SetY(player_.GetY()-1);
 	}
-	else if (direction == Direction::Down) {
-		return map[player.get_player_y()+1][player.get_player_x()];
+}
+
+void PlayerController::MoveDown() {
+	player_.SetDirection(Direction::Down);
+	if (map_.IsWalkable(player_.GetY()+1, player_.GetX())) {
+		player_.SetY(player_.GetY()+1);
 	}
-	else if (direction == Direction::Left) {
-		return map[player.get_player_y()][player.get_player_x()-1];
+}
+
+void PlayerController::MoveLeft() {
+	player_.SetDirection(Direction::Left);
+	if (map_.IsWalkable(player_.GetY(), player_.GetX()-1)) {
+		player_.SetX(player_.GetX()-1);
+	}
+}
+
+void PlayerController::MoveRight() {
+	player_.SetDirection(Direction::Right);
+	if (map_.IsWalkable(player_.GetY(), player_.GetX()+1)) {
+		player_.SetX(player_.GetX()+1);
 	}
 }

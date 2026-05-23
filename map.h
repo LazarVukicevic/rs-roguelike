@@ -3,19 +3,20 @@
 
 #include <vector>
 #include <string>
-#include <fstream>
 
 #include "direction.h"
 
 class Map {
     std::vector<std::string> map_;
+    size_t max_width = 0;
     public:
-        Map(std::string& filename);
-        void Load(std::string& filename);
-        bool isWalkable(int y, int x);
+        Map(const std::string& filename);
+        bool IsWalkable(int y, int x);
         char GetAdjacentTile(int y, int x, Direction direction);
-        char get_tile(int y, int x);
-        void set_tile(int y, int x, char symbol);
+        char GetTile(int y, int x);
+        void SetTile(int y, int x, char symbol);
+        int GetHeight();
+        int GetWidth();
     
 };
 

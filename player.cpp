@@ -3,36 +3,36 @@
 Player::Player(std::string player_name) : player_name_(player_name) {
 }
 
-std::string Player::get_player_name() {
+std::string Player::GetName() {
     return player_name_;
 }
 
-void Player::gain_xp(Skill skill, int xp) {
+void Player::GainXp(Skill skill, int xp) {
     skill_xp_map_[skill] += xp;
 }
 
-void Player::level_up(Skill skill) {
+void Player::LevelUp(Skill skill) {
     skill_level_map_[skill]++;
 }
 
-int Player::get_xp(Skill skill) {
+int Player::GetXp(Skill skill) {
     return skill_xp_map_[skill];
 }
 
-int Player::get_level(Skill skill) {
+int Player::GetLevel(Skill skill) {
     return skill_level_map_[skill];
 }
 
-Direction Player::get_player_direction() {
+Direction Player::GetDirection() {
     return player_direction_;
 }
 
 
-void Player::set_player_direction(Direction new_direction) {
+void Player::SetDirection(Direction new_direction) {
     player_direction_ = new_direction;
 }
 
-std::string Player::PrintPlayerDirection() {
+std::string Player::PrintDirection() {
     if (player_direction_ == Direction::Up) {
 		return "UP";
 	}
@@ -47,18 +47,18 @@ std::string Player::PrintPlayerDirection() {
 	}
 }
 
-void Player::set_player_x(int new_x) {
+void Player::SetX(int new_x) {
     player_x_ = new_x;
 }
 
-void Player::set_player_y(int new_y) {
+void Player::SetY(int new_y) {
     player_y_ = new_y;
 }
 
-int Player::get_player_y() {
+int Player::GetY() {
     return player_y_;
 }
 
-int Player::get_player_x() {
+int Player::GetX() {
     return player_x_;
 }

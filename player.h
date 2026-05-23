@@ -5,17 +5,14 @@
 #include <unordered_map>
 #include <vector>
 
+#include "direction.h"
+
 enum class Skill {
     Woodcutting,
     Mining
 };
 
-enum class Direction {
-	Up,
-	Right,
-	Left,
-	Down
-};
+
 
 
 class Player {
@@ -33,18 +30,18 @@ class Player {
     Direction player_direction_ = Direction::Right; // default to right
     public:
         Player(std::string player_name);
-        std::string get_player_name();
-        void gain_xp(Skill skill, int xp);
-        void level_up(Skill skill);
-        int get_xp(Skill skill);
-        int get_level(Skill skill);
-        Direction get_player_direction();
-        std::string PrintPlayerDirection();
-        void set_player_direction(Direction new_direction);
-        int get_player_y();
-        int get_player_x();
-        void set_player_y(int new_y);
-        void set_player_x(int new_x);
+        std::string GetName();
+        void GainXp(Skill skill, int xp);
+        void LevelUp(Skill skill);
+        int GetXp(Skill skill);
+        int GetLevel(Skill skill);
+        Direction GetDirection();
+        std::string PrintDirection();
+        void SetDirection(Direction new_direction);
+        int GetY();
+        int GetX();
+        void SetY(int new_y);
+        void SetX(int new_x);
 
 };
 
