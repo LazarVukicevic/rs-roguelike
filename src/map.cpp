@@ -58,3 +58,7 @@ int Map::GetHeight() {
 int Map::GetWidth() {
 	return max_width;
 }
+
+int Map::GetWidth(int row) {
+	return map_[row].size();
+}
