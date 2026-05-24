@@ -3,7 +3,7 @@
 #include <signal.h>
 #include <curses.h>
 
-Game::Game(const std::string& player_name, const std::string& file_name) : player_(player_name), map_(file_name), controller_(player_, map_) { }
+Game::Game(const std::string& player_name, const std::string& file_name) : player_(player_name), map_(file_name), player_controller_(player_, map_) { }
 
 void Game::Run() {
     (void) signal(SIGINT, finish);
@@ -28,22 +28,22 @@ void Game::ProcessInput() {
 
     switch(c) {
 				case KEY_UP:
-					controller_.MoveUp();
+					player_controller_.MoveUp();
 					break;
 				case KEY_DOWN:
-					controller_.MoveDown();
+					player_controller_.MoveDown();
 					break;
 				case KEY_LEFT:
-					controller_.MoveLeft();
+					player_controller_.MoveLeft();
 					break;
 				case KEY_RIGHT:
-					controller_.MoveRight();
+					player_controller_.MoveRight();
 					break;
 				case 'q':
 					running_ = false;
 					break;
 				case 'c':
-					if(controller_.ChopTree()) {
+					if(player_controller_.ChopTree()) {
                         message_ = "You chop down the tree.";
                     } else {
                         message_ = "There are no trees nearby to chop down.";

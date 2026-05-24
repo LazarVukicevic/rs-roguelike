@@ -10,7 +10,7 @@ class Game {
 
     Player player_;
     Map map_;
-    PlayerController controller_;
+    PlayerController player_controller_;
     std:: string message_ = "";
     bool running_ = true;
     int rows_, cols_;
