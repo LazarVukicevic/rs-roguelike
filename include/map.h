@@ -17,6 +17,7 @@ class Map {
         void SetTile(int y, int x, char symbol);
         int GetHeight();
         int GetWidth();
+        int GetWidth(int row);
     
 };
 
