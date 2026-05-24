@@ -2,6 +2,8 @@
 
 #include <signal.h>
 #include <curses.h>
+#include <format>
+#include <iomanip>
 
 Game::Game(const std::string& player_name, const std::string& file_name) : 
 	player_(player_name), 
@@ -51,13 +53,13 @@ void Game::ProcessInput() {
 					break;
 				case 'c':
 					if(player_controller_.ChopTree()) {
-						// spawn manager should schedule respawn here
 						Coordinate coord = GetCoordinate();
 						map_.SetTile(coord.y, coord.x, '-');
 						spawn_manager_.ScheduleRespawn(coord.y, coord.x, 'T', 5);
-                        message_ = "You chop down the tree.";
+                        // message_ = "You chop down the tree.";
+						PushMessage(std::chrono::system_clock::now(), "You chop down the tree.");
                     } else {
-                        message_ = "There are no trees nearby to chop down.";
+                        PushMessage(std::chrono::system_clock::now(), "There are no trees nearby to chop down.");
                     }
 					break;
 			}
@@ -68,11 +70,14 @@ void Game::Render() {
     mvprintw(map_.GetHeight() + 1, 0, "Press : for command mode, q to quit");
 	mvprintw(map_.GetHeight()+2, 0, "Player Direction: %s", player_.PrintDirection().c_str());
     
-    mvprintw(map_.GetHeight()+3, 0, "--- %s ---", message_.c_str());
+    // mvprintw(map_.GetHeight()+3, 0, "--- %s ---", message_.c_str());
+	for (int i = 0; (size_t)i < message_list_.size(); i++) {
+		mvprintw(map_.GetHeight()+i+3, 0, "--- %s ---", message_list_[i].c_str());
+	}
     // message_.clear();
     
     std::string xp = std::to_string(player_.GetXp(Skill::Woodcutting)).c_str();
-	mvprintw(map_.GetHeight()+4, 0, "%s", xp.c_str()); // demo
+	mvprintw(map_.GetHeight()+8, 0, "%s", xp.c_str()); // demo
     
     clrtoeol();
 
@@ -121,4 +126,14 @@ Coordinate Game::GetCoordinate() {
 	else { // right
 		return {player_.GetY(), player_.GetX()+1};
 	}
+}
+
+void Game::PushMessage(std::chrono::system_clock::time_point time, std::string message) {
+	std::time_t now_t = std::chrono::system_clock::to_time_t(time);
+	std::ostringstream oss;
+	oss << std::put_time(std::localtime(&now_t), "[%H:%M:%S] ") << message;
+	if (message_list_.size() >= kMaxMessages) {
+		message_list_.erase(message_list_.begin());
+	}
+	message_list_.push_back(oss.str());
 }

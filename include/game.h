@@ -17,6 +17,8 @@ class Game {
     std:: string message_ = "";
     bool running_ = true;
     int rows_, cols_;
+    std::vector<std::string> message_list_;
+    const size_t kMaxMessages = 5;
 
     public:
         Game(const std::string& player_name, const std::string& file_name);
@@ -27,6 +29,7 @@ class Game {
         void Update();
         static void finish(int sig);
         void SetMessage(std::string& newMessage);
+        void PushMessage(std::chrono::system_clock::time_point, std::string message);
         std::string GetMessage();
         Coordinate GetCoordinate();
 
