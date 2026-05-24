@@ -14,6 +14,7 @@ void SpawnManager::Update() {
     while (it != pending_respawns_.end()) {
         if (now >= it->respawn_at) {
             map_.SetTile(it->y, it->x, it->tile);
+            it = pending_respawns_.erase(it);
         } else {
             ++it;
         }

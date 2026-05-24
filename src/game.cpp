@@ -17,6 +17,7 @@ void Game::Run() {
 	(void) noecho();
     getmaxyx(stdscr, rows_, cols_);
 
+	timeout(500);
     while(running_) {
         Render();
         ProcessInput();
@@ -67,8 +68,8 @@ void Game::Render() {
     mvprintw(map_.GetHeight() + 1, 0, "Press : for command mode, q to quit");
 	mvprintw(map_.GetHeight()+2, 0, "Player Direction: %s", player_.PrintDirection().c_str());
     
-    mvprintw(map_.GetHeight()+3, 0, "%s", message_.c_str());
-    message_.clear();
+    mvprintw(map_.GetHeight()+3, 0, "--- %s ---", message_.c_str());
+    // message_.clear();
     
     std::string xp = std::to_string(player_.GetXp(Skill::Woodcutting)).c_str();
 	mvprintw(map_.GetHeight()+4, 0, "%s", xp.c_str()); // demo
