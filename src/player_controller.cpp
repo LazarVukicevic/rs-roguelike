@@ -11,12 +11,8 @@ bool PlayerController::ChopTree() {
 	if(!IsTree()) {
 		return false;
 	}
-	else if(player_.GetInventory().IsFull()) {
-		return false;
-	}
     player_.GainXp(Skill::Woodcutting, 25);
-	player_.GetInventory().AddItem({"Logs", 1});
-	return true;
+	return player_.GetInventory().AddItem({"Logs", 1});
 }
 
 void PlayerController::MoveUp() {
@@ -47,8 +43,8 @@ void PlayerController::MoveRight() {
 	}
 }
 
-std::string PlayerController::PrintItems() {
-	if (player_.GetInventory().size() == 0) {
+std::string PlayerController::PrintInventory() {
+	if (player_.GetInventory().Size() == 0) {
 		return "Inventory is empty.";
 	}
     std::string result;
@@ -56,4 +52,21 @@ std::string PlayerController::PrintItems() {
         result += item.name + " x" + std::to_string(item.quantity) + "\n";
     }
     return result;
+}
+
+std::string PlayerController::PrintInventory(int index) {
+	if (player_.GetInventory().Size() == 0) {
+		return "Inventory is empty.";
+	}
+	std::string result;
+	if (player_.GetInventory().Size() < index) {
+		result += player_.GetInventory().end()->name + " x" + std::to_string(player_.GetInventory().end()->quantity) + "\n";
+	} else {
+		result += player_.GetInventory().atIndex(index).name + " x" + std::to_string(player_.GetInventory().atIndex(index).quantity);
+	}
+	return result;
+}
+
+bool PlayerController::AddItemToInventory(const Item& item) {
+	return player_.GetInventory().AddItem(item);
 }
