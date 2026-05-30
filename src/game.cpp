@@ -56,15 +56,16 @@ void Game::ProcessInput() {
 						Coordinate coord = GetCoordinate();
 						map_.SetTile(coord.y, coord.x, '-');
 						spawn_manager_.ScheduleRespawn(coord.y, coord.x, 'T', 5);
-                        // message_ = "You chop down the tree.";
 						PushMessage(std::chrono::system_clock::now(), "You chop down the tree.");
                     } else {
                         PushMessage(std::chrono::system_clock::now(), "There are no trees nearby to chop down.");
                     }
 					break;
 				case 'i':
-				// player_controller_.i
-					PushMessage(std::chrono::system_clock::now(), player_controller_.PrintItems());
+					PushMessage(std::chrono::system_clock::now(), player_controller_.PrintInventory());
+					break;
+				case 'm':
+					player_controller_.AddItemToInventory({"Copper ore"+std::to_string(std::rand()), 1}); // testing inventory display
 					break;
 			}
 }
@@ -74,32 +75,20 @@ void Game::Render() {
     mvprintw(map_.GetHeight() + 1, 0, "Press i for inventory, q to quit");
 	mvprintw(map_.GetHeight()+2, 0, "Player Direction: %s", player_.PrintDirection().c_str());
     
-    // mvprintw(map_.GetHeight()+3, 0, "--- %s ---", message_.c_str());
 	for (int i = 0; (size_t)i < message_list_.size(); i++) {
-		mvprintw(map_.GetHeight()+i+3, 0, "--- %s ---", message_list_[i].c_str());
+		mvprintw(map_.GetHeight()+i+3, 0, "- %s -", message_list_[i].c_str());
 	}
-    // message_.clear();
     
     std::string xp = std::to_string(player_.GetXp(Skill::Woodcutting)).c_str();
 	mvprintw(map_.GetHeight()+8, 0, "%s", xp.c_str()); // demo
     
     clrtoeol();
 
+	RenderMap();
 
-    for(int y = 0; y < map_.GetHeight(); y++) {
-			for (int x = 0; x < map_.GetWidth(y); x++) {
-				if (map_.GetTile(y, x) == '@') {
-					player_.SetY(y);
-                    player_.SetX(x);
-					map_.SetTile(y, x, ' ');
-				}
-				mvaddch(y, x, map_.GetTile(y, x));
-			}
-		}
+	RenderInventory();
 
-		mvaddch(player_.GetY(), player_.GetX(), '@');
-
-		refresh();
+	refresh();
 
 }
 
@@ -140,4 +129,25 @@ void Game::PushMessage(std::chrono::system_clock::time_point time, std::string m
 		message_list_.erase(message_list_.begin());
 	}
 	message_list_.push_back(oss.str());
+}
+
+void Game::RenderMap() {
+	for(int y = 0; y < map_.GetHeight(); y++) {
+			for (int x = 0; x < map_.GetWidth(y); x++) {
+				if (map_.GetTile(y, x) == '@') {
+					player_.SetY(y);
+                    player_.SetX(x);
+					map_.SetTile(y, x, ' ');
+				}
+				mvaddch(y, x, map_.GetTile(y, x));
+			}
+		}
+
+	mvaddch(player_.GetY(), player_.GetX(), '@');
+}
+
+void Game::RenderInventory() { // render after map
+	for(int i = 0; i < player_.GetInventory().Size(); i++) {
+		mvprintw(i, map_.GetWidth()+30, "| %s", player_controller_.PrintInventory(i).c_str());
+	}
 }

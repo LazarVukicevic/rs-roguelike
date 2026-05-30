@@ -7,8 +7,8 @@
 
 class Inventory {
     std::vector<Item> inventory_;
-    const size_t kMaxSlots = 28;
     public:
+        const size_t kMaxSlots = 28;
         bool AddItem(const Item& item);
         bool RemoveItem(const std::string& name, int quantity = 1);
         bool IsFull();
@@ -16,7 +16,8 @@ class Inventory {
         auto end()         { return inventory_.end(); }
         auto begin() const { return inventory_.cbegin(); }
         auto end()   const { return inventory_.cend(); }
-        size_t size()      { return inventory_.size(); }
+        auto atIndex(int index)     { return inventory_[index]; }
+        size_t Size()      { return inventory_.size(); }
 };
 
 #endif

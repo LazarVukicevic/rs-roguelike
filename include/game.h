@@ -32,6 +32,8 @@ class Game {
         void PushMessage(std::chrono::system_clock::time_point, std::string message);
         std::string GetMessage();
         Coordinate GetCoordinate();
+        void RenderMap();
+        void RenderInventory();
 
 
 

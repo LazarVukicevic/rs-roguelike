@@ -5,14 +5,14 @@ bool Inventory::IsFull() {
 }
 
 bool Inventory::AddItem(const Item& item) {
-    if (IsFull()) {
-        return false;
-    }
     for (auto it = inventory_.begin(); it != inventory_.end(); ++it) {
         if (it->name == item.name) {
             it->quantity++;
             return true;
         }
+    }
+    if (IsFull()) {
+        return false;
     }
     inventory_.push_back(item);
     return true;
