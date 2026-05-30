@@ -7,12 +7,15 @@ bool PlayerController::IsTree() {
 		map_.GetAdjacentTile(player_.GetY(), player_.GetX(), player_.GetDirection()) == 'T';
 }
 
-bool PlayerController::ChopTree() {
+State PlayerController::ChopTree() {
 	if(!IsTree()) {
-		return false;
+		return State::kIsNotTree;
+	}
+	if (!player_.GetInventory().AddItem({"Logs", 1})) {
+		return State::kInventoryFull;
 	}
     player_.GainXp(Skill::Woodcutting, 25);
-	return player_.GetInventory().AddItem({"Logs", 1});
+	return State::kSuccess;
 }
 
 void PlayerController::MoveUp() {

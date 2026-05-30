@@ -3,13 +3,14 @@
 
 #include "player.h"
 #include "map.h"
+#include "states.h"
 
 class PlayerController {
     Player& player_;
     Map& map_;
     public:
         PlayerController(Player& player, Map& map);
-        bool ChopTree();
+        State ChopTree();
         void MoveUp();
         void MoveLeft();
         void MoveRight();

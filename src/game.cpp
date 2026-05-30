@@ -51,16 +51,20 @@ void Game::ProcessInput() {
 				case 'q':
 					running_ = false;
 					break;
-				case 'c':
-					if(player_controller_.ChopTree()) {
+				case 'c': {
+					State ch = player_controller_.ChopTree();
+					if(ch == State::kSuccess) {
 						Coordinate coord = GetCoordinate();
 						map_.SetTile(coord.y, coord.x, '-');
 						spawn_manager_.ScheduleRespawn(coord.y, coord.x, 'T', 5);
 						PushMessage(std::chrono::system_clock::now(), "You chop down the tree.");
-                    } else {
+                    } else if (ch == State::kIsNotTree){
                         PushMessage(std::chrono::system_clock::now(), "There are no trees nearby to chop down.");
-                    }
+                    } else {
+						PushMessage(std::chrono::system_clock::now(), "Your inventory is too full to chop this tree.");
+					}
 					break;
+				}
 				case 'i':
 					PushMessage(std::chrono::system_clock::now(), player_controller_.PrintInventory());
 					break;
@@ -148,6 +152,6 @@ void Game::RenderMap() {
 
 void Game::RenderInventory() { // render after map
 	for(int i = 0; (size_t)i < player_.GetInventory().Size(); i++) {
-		mvprintw(i, map_.GetWidth()+30, "| %s", player_controller_.PrintInventory(i).c_str());
+		mvprintw(i, map_.GetWidth()+35, "| %s", player_controller_.PrintInventory(i).c_str());
 	}
 }
