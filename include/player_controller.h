@@ -14,6 +14,7 @@ class PlayerController {
         void MoveLeft();
         void MoveRight();
         void MoveDown();
+        std::string PrintItems();
     private:
         bool IsTree();
 };

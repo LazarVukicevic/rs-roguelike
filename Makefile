@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Isrc -Iinclude
 LDFLAGS = -lncurses
 
-SRCS = src/main.cpp src/game.cpp src/player.cpp src/player_controller.cpp src/map.cpp src/spawn_manager.cpp
+SRCS = src/main.cpp src/game.cpp src/player.cpp src/player_controller.cpp src/map.cpp src/spawn_manager.cpp src/inventory.cpp
 TARGET = roguelike
 
 TEST_SRCS = src/player.cpp src/map.cpp src/player_controller.cpp
