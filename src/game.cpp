@@ -71,7 +71,7 @@ void Game::ProcessInput() {
 
 void Game::Render() {
     clear();
-    mvprintw(map_.GetHeight() + 1, 0, "Press : for command mode, q to quit");
+    mvprintw(map_.GetHeight() + 1, 0, "Press i for inventory, q to quit");
 	mvprintw(map_.GetHeight()+2, 0, "Player Direction: %s", player_.PrintDirection().c_str());
     
     // mvprintw(map_.GetHeight()+3, 0, "--- %s ---", message_.c_str());

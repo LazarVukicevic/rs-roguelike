@@ -16,6 +16,7 @@ class Inventory {
         auto end()         { return inventory_.end(); }
         auto begin() const { return inventory_.cbegin(); }
         auto end()   const { return inventory_.cend(); }
+        size_t size()      { return inventory_.size(); }
 };
 
 #endif

@@ -48,6 +48,9 @@ void PlayerController::MoveRight() {
 }
 
 std::string PlayerController::PrintItems() {
+	if (player_.GetInventory().size() == 0) {
+		return "Inventory is empty.";
+	}
     std::string result;
     for (const auto& item : player_.GetInventory()) {
         result += item.name + " x" + std::to_string(item.quantity) + "\n";
