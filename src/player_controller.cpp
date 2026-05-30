@@ -11,7 +11,11 @@ bool PlayerController::ChopTree() {
 	if(!IsTree()) {
 		return false;
 	}
+	else if(player_.GetInventory().IsFull()) {
+		return false;
+	}
     player_.GainXp(Skill::Woodcutting, 25);
+	player_.GetInventory().AddItem({"Logs", 1});
 	return true;
 }
 
@@ -41,4 +45,12 @@ void PlayerController::MoveRight() {
 	if (map_.IsWalkable(player_.GetY(), player_.GetX()+1)) {
 		player_.SetX(player_.GetX()+1);
 	}
+}
+
+std::string PlayerController::PrintItems() {
+    std::string result;
+    for (const auto& item : player_.GetInventory()) {
+        result += item.name + " x" + std::to_string(item.quantity) + "\n";
+    }
+    return result;
 }

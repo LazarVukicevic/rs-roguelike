@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "direction.h"
+#include "inventory.h"
 
 enum class Skill {
     Woodcutting,
@@ -16,6 +17,7 @@ enum class Skill {
 
 
 class Player {
+    Inventory inventory_;
     std::string player_name_;
     std::unordered_map<Skill, int> skill_xp_map_ = {
         {Skill::Woodcutting, 0},
@@ -42,6 +44,7 @@ class Player {
         int GetX();
         void SetY(int new_y);
         void SetX(int new_x);
+        Inventory& GetInventory();
 
 };
 

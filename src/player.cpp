@@ -62,3 +62,7 @@ int Player::GetY() {
 int Player::GetX() {
     return player_x_;
 }
+
+Inventory& Player::GetInventory() {
+    return inventory_;
+}

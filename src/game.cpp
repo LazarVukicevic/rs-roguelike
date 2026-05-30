@@ -62,6 +62,10 @@ void Game::ProcessInput() {
                         PushMessage(std::chrono::system_clock::now(), "There are no trees nearby to chop down.");
                     }
 					break;
+				case 'i':
+				// player_controller_.i
+					PushMessage(std::chrono::system_clock::now(), player_controller_.PrintItems());
+					break;
 			}
 }
 
