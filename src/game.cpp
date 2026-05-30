@@ -147,7 +147,7 @@ void Game::RenderMap() {
 }
 
 void Game::RenderInventory() { // render after map
-	for(int i = 0; i < player_.GetInventory().Size(); i++) {
+	for(int i = 0; (size_t)i < player_.GetInventory().Size(); i++) {
 		mvprintw(i, map_.GetWidth()+30, "| %s", player_controller_.PrintInventory(i).c_str());
 	}
 }

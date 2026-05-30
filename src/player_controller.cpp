@@ -59,7 +59,7 @@ std::string PlayerController::PrintInventory(int index) {
 		return "Inventory is empty.";
 	}
 	std::string result;
-	if (player_.GetInventory().Size() < index) {
+	if (player_.GetInventory().Size() < (size_t)index) {
 		result += player_.GetInventory().end()->name + " x" + std::to_string(player_.GetInventory().end()->quantity) + "\n";
 	} else {
 		result += player_.GetInventory().atIndex(index).name + " x" + std::to_string(player_.GetInventory().atIndex(index).quantity);
