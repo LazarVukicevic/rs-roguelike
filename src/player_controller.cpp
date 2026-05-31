@@ -4,7 +4,7 @@ PlayerController::PlayerController(Player& player, Map& map) : player_(player), 
 
 bool PlayerController::IsTree() {
 	return 
-		map_.GetAdjacentTile(player_.GetY(), player_.GetX(), player_.GetDirection()) == 'T';
+		map_.GetAdjacentTile(player_.GetY(), player_.GetX(), player_.GetDirection()) == TileType::Tree;
 }
 
 State PlayerController::ChopTree() {

@@ -7,7 +7,7 @@
 struct PendingRespawn {
     int y;
     int x;
-    char tile;
+    TileType tile;
     std::chrono::steady_clock::time_point respawn_at;
 };
 
@@ -17,7 +17,7 @@ class SpawnManager {
     std::vector<PendingRespawn> pending_respawns_;
     public:
         SpawnManager(Map& map);
-        void ScheduleRespawn(int y, int x, char tile, int delay_seconds);
+        void ScheduleRespawn(int y, int x, TileType tile, int delay_seconds);
         void Update();
 };
 

@@ -12,24 +12,29 @@ Map::Map(const std::string& filename) {
 
 	while (std::getline(file, line)) {
 		if(!line.empty()) {
-			map_.push_back(line);
-			max_width = std::max(max_width, line.size());
+			std::vector<TileType> row;
+			row.reserve(line.size());
+			for (char c : line) {
+				row.push_back(TileFromChar(c));
+			}
+			map_.push_back(row);
+			max_width = std::max(max_width, row.size());
 		}
 	}
 }
 
-char Map::GetTile(int y, int x) {
+TileType Map::GetTile(int y, int x) {
 	if (y < 0 || y >= GetHeight() || x < 0 || x >= GetWidth()) {
-		return '`'; // invalid tile is `
+		return TileType::Invalid;
 	}
     return map_[y][x];
 }
 
-void Map::SetTile(int y, int x, char symbol) { // need to ensure illegal characters are not added
-    map_[y][x] = symbol;
+void Map::SetTile(int y, int x, TileType tile) {
+    map_[y][x] = tile;
 }
 
-char Map::GetAdjacentTile(int y, int x, Direction direction) {
+TileType Map::GetAdjacentTile(int y, int x, Direction direction) {
     if (direction == Direction::Up) {
 		return map_[y-1][x];
 	}
@@ -45,7 +50,7 @@ char Map::GetAdjacentTile(int y, int x, Direction direction) {
 }
 
 bool Map::IsWalkable(int y, int x) {
-	if (y > 0 && y < GetHeight()-1 && x > 0 && x < GetWidth()-1 && map_[y][x] == ' ') {
+	if (y > 0 && y < GetHeight()-1 && x > 0 && x < GetWidth()-1 && map_[y][x] == TileType::Floor) {
 				return true;
 		}
 	return false;

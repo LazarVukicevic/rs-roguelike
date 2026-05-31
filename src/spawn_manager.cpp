@@ -3,7 +3,7 @@
 SpawnManager::SpawnManager(Map& map) : map_(map) {}
 
 
-void SpawnManager::ScheduleRespawn(int y, int x, char tile, int delay_seconds) {
+void SpawnManager::ScheduleRespawn(int y, int x, TileType tile, int delay_seconds) {
     auto respawn_at = std::chrono::steady_clock::now() + std::chrono::seconds(delay_seconds);
     pending_respawns_.push_back({y, x, tile, respawn_at});
 }
