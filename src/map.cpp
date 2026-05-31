@@ -1,6 +1,6 @@
+#include "map.h"
 #include <fstream>
 #include <stdexcept>
-#include "map.h"
 
 Map::Map(const std::string& filename) {
     std::ifstream file(filename);
@@ -24,14 +24,26 @@ Map::Map(const std::string& filename) {
 }
 
 TileType Map::GetTile(int y, int x) {
-	if (y < 0 || y >= GetHeight() || x < 0 || x >= GetWidth()) {
-		return TileType::Invalid;
+	if (y < 0 || y >= GetHeight() || x < 0 || x >= GetWidth(y)) {
+		return TileType::kInvalid;
 	}
     return map_[y][x];
 }
 
 void Map::SetTile(int y, int x, TileType tile) {
     map_[y][x] = tile;
+}
+
+Coordinate Map::FindPlayerStart() {
+    for (int y = 0; y < GetHeight(); y++) {
+        for (int x = 0; x < GetWidth(y); x++) {
+            if (map_[y][x] == TileType::kPlayerStart) {
+                map_[y][x] = TileType::kFloor;
+                return {y, x};
+            }
+        }
+    }
+    return {1, 1};
 }
 
 TileType Map::GetAdjacentTile(int y, int x, Direction direction) {
@@ -50,7 +62,7 @@ TileType Map::GetAdjacentTile(int y, int x, Direction direction) {
 }
 
 bool Map::IsWalkable(int y, int x) {
-	if (y > 0 && y < GetHeight()-1 && x > 0 && x < GetWidth()-1 && map_[y][x] == TileType::Floor) {
+	if (y > 0 && y < GetHeight()-1 && x > 0 && x < GetWidth()-1 && map_[y][x] == TileType::kFloor) {
 				return true;
 		}
 	return false;

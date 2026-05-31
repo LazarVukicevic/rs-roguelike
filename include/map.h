@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 
+#include "coordinate.h"
 #include "direction.h"
 #include "tile.h"
 
@@ -16,6 +17,7 @@ class Map {
         TileType GetAdjacentTile(int y, int x, Direction direction);
         TileType GetTile(int y, int x);
         void SetTile(int y, int x, TileType tile);
+        Coordinate FindPlayerStart();
         int GetHeight();
         int GetWidth();
         int GetWidth(int row);

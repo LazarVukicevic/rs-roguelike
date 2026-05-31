@@ -5,6 +5,7 @@
 #include <curses.h>
 #include <format>
 #include <iomanip>
+#include <algorithm>
 
 Game::Game(const std::string& player_name, const std::string& file_name) : 
 	player_(player_name), 
@@ -22,6 +23,9 @@ void Game::Run() {
     getmaxyx(stdscr, rows_, cols_);
 	curs_set(0);
 	timeout(500);
+	Coordinate start = map_.FindPlayerStart();
+	player_.SetY(start.y);
+	player_.SetX(start.x);
     while(running_) {
         Render();
         ProcessInput();
@@ -64,11 +68,11 @@ void Game::ProcessInput() {
 
 void Game::Render() {
     clear();
-    mvprintw(map_.GetHeight() + 1, 0, "Press q to quit");
-	mvprintw(map_.GetHeight()+2, 0, "Player Direction: %s", player_.PrintDirection().c_str());
+    mvprintw(kViewHeight + 1, 0, "Press q to quit");
+	mvprintw(kViewHeight+2, 0, "Player Direction: %s", player_.PrintDirection().c_str());
     
 	for (int i = 0; (size_t)i < message_list_.size(); i++) {
-		mvprintw(map_.GetHeight()+i+3, 0, "- %s -", message_list_[i].c_str());
+		mvprintw(kViewHeight+i+3, 0, "- %s -", message_list_[i].c_str());
 	}
     
     std::string xp = std::to_string(player_.GetXp(Skill::Woodcutting)).c_str();
@@ -123,20 +127,29 @@ void Game::PushMessage(std::chrono::system_clock::time_point time, std::string m
 	message_list_.push_back(oss.str());
 }
 
-void Game::RenderMap() {
-	for(int y = 0; y < map_.GetHeight(); y++) {
-			for (int x = 0; x < map_.GetWidth(y); x++) {
-				if (map_.GetTile(y, x) == TileType::kPlayerStart) {
-					player_.SetY(y);
-                    player_.SetX(x);
-					map_.SetTile(y, x, TileType::kFloor);
-				}
-				std::wstring glyph = TileGlyph(map_.GetTile(y, x));
-				mvaddnwstr(y, x, glyph.c_str(), glyph.size());
-			}
-		}
+// void Game::RenderMap() {
+// 	for(int y = 0; y < map_.GetHeight(); y++) {
+// 			for (int x = 0; x < map_.GetWidth(y); x++) {
+// 				std::wstring glyph = TileGlyph(map_.GetTile(y, x));
+// 				mvaddnwstr(y, x, glyph.c_str(), glyph.size());
+// 			}
+// 		}
 
-	mvaddnwstr(player_.GetY(), player_.GetX(), L"@", 1);
+// 	mvaddnwstr(player_.GetY(), player_.GetX(), L"@", 1);
+// }
+
+void Game::RenderMap() {
+	cam_x_ = std::clamp(player_.GetX() - kViewWidth/2, 0, std::max(0, map_.GetWidth() - kViewWidth));
+    cam_y_ = std::clamp(player_.GetY() - kViewHeight/2, 0, std::max(0, map_.GetHeight() - kViewHeight));
+	for (int y = cam_y_; y < cam_y_ + kViewHeight; y++) {
+		for (int x = cam_x_; x < cam_x_ + kViewWidth; x++) {
+			TileType tile = map_.GetTile(y, x);
+			if (tile == TileType::kInvalid) continue;
+			std::wstring glyph = TileGlyph(tile);
+			mvaddnwstr(y - cam_y_, x - cam_x_, glyph.c_str(), glyph.size());
+		}
+	}
+	mvaddnwstr(player_.GetY()-cam_y_, player_.GetX()-cam_x_, L"@", 1);
 }
 
 void Game::RenderInventory() { // render after map

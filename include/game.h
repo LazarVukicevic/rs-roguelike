@@ -8,8 +8,8 @@
 #include "coordinate.h"
 
 class Game {
-    
-
+    static constexpr int kViewWidth  = 30;
+    static constexpr int kViewHeight = 10;
     Player player_;
     Map map_;
     PlayerController player_controller_;
@@ -19,6 +19,8 @@ class Game {
     int rows_, cols_;
     std::vector<std::string> message_list_;
     const size_t kMaxMessages = 5;
+    int cam_x_ = 0;
+    int cam_y_ = 0;
 
     public:
         Game(const std::string& player_name, const std::string& file_name);
