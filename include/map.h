@@ -5,16 +5,17 @@
 #include <string>
 
 #include "direction.h"
+#include "tile.h"
 
 class Map {
-    std::vector<std::string> map_;
+    std::vector<std::vector<TileType>> map_;
     size_t max_width = 0;
     public:
         Map(const std::string& filename);
         bool IsWalkable(int y, int x);
-        char GetAdjacentTile(int y, int x, Direction direction);
-        char GetTile(int y, int x);
-        void SetTile(int y, int x, char symbol);
+        TileType GetAdjacentTile(int y, int x, Direction direction);
+        TileType GetTile(int y, int x);
+        void SetTile(int y, int x, TileType tile);
         int GetHeight();
         int GetWidth();
         int GetWidth(int row);

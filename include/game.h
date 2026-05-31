@@ -34,6 +34,7 @@ class Game {
         Coordinate GetCoordinate();
         void RenderMap();
         void RenderInventory();
+        void HandleChopTree();
 
 
 

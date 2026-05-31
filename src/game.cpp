@@ -1,5 +1,6 @@
 #include "game.h"
 
+#include <locale.h>
 #include <signal.h>
 #include <curses.h>
 #include <format>
@@ -13,12 +14,13 @@ Game::Game(const std::string& player_name, const std::string& file_name) :
 
 void Game::Run() {
     (void) signal(SIGINT, finish);
+	setlocale(LC_ALL, "");
 	(void) initscr();
 	keypad(stdscr, TRUE);
 	(void) cbreak();
 	(void) noecho();
     getmaxyx(stdscr, rows_, cols_);
-
+	curs_set(0);
 	timeout(500);
     while(running_) {
         Render();
@@ -51,22 +53,8 @@ void Game::ProcessInput() {
 				case 'q':
 					running_ = false;
 					break;
-				case 'c': {
-					State ch = player_controller_.ChopTree();
-					if(ch == State::kSuccess) {
-						Coordinate coord = GetCoordinate();
-						map_.SetTile(coord.y, coord.x, '-');
-						spawn_manager_.ScheduleRespawn(coord.y, coord.x, 'T', 5);
-						PushMessage(std::chrono::system_clock::now(), "You chop down the tree.");
-                    } else if (ch == State::kIsNotTree){
-                        PushMessage(std::chrono::system_clock::now(), "There are no trees nearby to chop down.");
-                    } else {
-						PushMessage(std::chrono::system_clock::now(), "Your inventory is too full to chop this tree.");
-					}
-					break;
-				}
-				case 'i':
-					PushMessage(std::chrono::system_clock::now(), player_controller_.PrintInventory());
+				case 'c':
+					HandleChopTree();
 					break;
 				case 'm':
 					player_controller_.AddItemToInventory({"Copper ore"+std::to_string(std::rand()), 1}); // testing inventory display
@@ -76,7 +64,7 @@ void Game::ProcessInput() {
 
 void Game::Render() {
     clear();
-    mvprintw(map_.GetHeight() + 1, 0, "Press i for inventory, q to quit");
+    mvprintw(map_.GetHeight() + 1, 0, "Press q to quit");
 	mvprintw(map_.GetHeight()+2, 0, "Player Direction: %s", player_.PrintDirection().c_str());
     
 	for (int i = 0; (size_t)i < message_list_.size(); i++) {
@@ -138,20 +126,35 @@ void Game::PushMessage(std::chrono::system_clock::time_point time, std::string m
 void Game::RenderMap() {
 	for(int y = 0; y < map_.GetHeight(); y++) {
 			for (int x = 0; x < map_.GetWidth(y); x++) {
-				if (map_.GetTile(y, x) == '@') {
+				if (map_.GetTile(y, x) == TileType::kPlayerStart) {
 					player_.SetY(y);
                     player_.SetX(x);
-					map_.SetTile(y, x, ' ');
+					map_.SetTile(y, x, TileType::kFloor);
 				}
-				mvaddch(y, x, map_.GetTile(y, x));
+				std::wstring glyph = TileGlyph(map_.GetTile(y, x));
+				mvaddnwstr(y, x, glyph.c_str(), glyph.size());
 			}
 		}
 
-	mvaddch(player_.GetY(), player_.GetX(), '@');
+	mvaddnwstr(player_.GetY(), player_.GetX(), L"@", 1);
 }
 
 void Game::RenderInventory() { // render after map
 	for(int i = 0; (size_t)i < player_.GetInventory().Size(); i++) {
 		mvprintw(i, map_.GetWidth()+35, "| %s", player_controller_.PrintInventory(i).c_str());
+	}
+}
+
+void Game::HandleChopTree() {
+	State ch = player_controller_.ChopTree();
+	if(ch == State::kSuccess) {
+		Coordinate coord = GetCoordinate();
+		map_.SetTile(coord.y, coord.x, TileType::kTreeStump);
+		spawn_manager_.ScheduleRespawn(coord.y, coord.x, TileType::kTree, 5);
+		PushMessage(std::chrono::system_clock::now(), "You chop down the tree.");
+	} else if (ch == State::kIsNotTree){
+		PushMessage(std::chrono::system_clock::now(), "There are no trees nearby to chop down.");
+	} else {
+		PushMessage(std::chrono::system_clock::now(), "Your inventory is too full to chop this tree.");
 	}
 }
