@@ -67,7 +67,7 @@ void Game::ProcessInput() {
 }
 
 void Game::Render() {
-    clear();
+    erase();
     mvprintw(kViewHeight + 1, 0, "Press q to quit");
 	mvprintw(kViewHeight+2, 0, "Player Direction: %s", player_.PrintDirection().c_str());
     
@@ -154,7 +154,7 @@ void Game::RenderMap() {
 
 void Game::RenderInventory() { // render after map
 	for(int i = 0; (size_t)i < player_.GetInventory().Size(); i++) {
-		mvprintw(i, map_.GetWidth()+35, "| %s", player_controller_.PrintInventory(i).c_str());
+		mvprintw(i, kViewWidth+35, "| %s", player_controller_.PrintInventory(i).c_str());
 	}
 }
 
