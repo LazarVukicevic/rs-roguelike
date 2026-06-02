@@ -1,2 +1,4 @@
 roguelike
 run_tests
+src/*.o
+src/*.d
