@@ -30,13 +30,12 @@ class Game {
         void ProcessInput();
         void Update();
         static void finish(int sig);
-        void SetMessage(std::string& newMessage);
         void PushMessage(std::chrono::system_clock::time_point, std::string message);
-        std::string GetMessage();
         Coordinate GetCoordinate();
         void RenderMap();
         void RenderInventory();
         void HandleChopTree();
+        void InitColours();
 
 
 

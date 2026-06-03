@@ -1,4 +1,5 @@
 #include "game.h"
+#include "tile.h"
 
 #include <locale.h>
 #include <signal.h>
@@ -17,6 +18,8 @@ void Game::Run() {
     (void) signal(SIGINT, finish);
 	setlocale(LC_ALL, "");
 	(void) initscr();
+    start_color();
+	InitColours();
 	keypad(stdscr, TRUE);
 	(void) cbreak();
 	(void) noecho();
@@ -76,14 +79,11 @@ void Game::Render() {
 	}
     
     std::string xp = std::to_string(player_.GetXp(Skill::Woodcutting)).c_str();
-	mvprintw(map_.GetHeight()+8, 0, "%s", xp.c_str()); // demo
+	mvprintw(kViewHeight+8, 0, "%s", xp.c_str()); // demo
     
     clrtoeol();
-
 	RenderMap();
-
 	RenderInventory();
-
 	refresh();
 
 }
@@ -92,14 +92,6 @@ void Game::finish(int sig)
 {
 	endwin();
 	exit(0);
-}
-
-void Game::SetMessage(std::string& newMessage) {
-    message_ = newMessage;
-}
-
-std::string Game::GetMessage() {
-    return message_.c_str();
 }
 
 Coordinate Game::GetCoordinate() {
@@ -127,16 +119,6 @@ void Game::PushMessage(std::chrono::system_clock::time_point time, std::string m
 	message_list_.push_back(oss.str());
 }
 
-// void Game::RenderMap() {
-// 	for(int y = 0; y < map_.GetHeight(); y++) {
-// 			for (int x = 0; x < map_.GetWidth(y); x++) {
-// 				std::wstring glyph = TileGlyph(map_.GetTile(y, x));
-// 				mvaddnwstr(y, x, glyph.c_str(), glyph.size());
-// 			}
-// 		}
-
-// 	mvaddnwstr(player_.GetY(), player_.GetX(), L"@", 1);
-// }
 
 void Game::RenderMap() {
 	cam_x_ = std::clamp(player_.GetX() - kViewWidth/2, 0, std::max(0, map_.GetWidth() - kViewWidth));
@@ -146,10 +128,15 @@ void Game::RenderMap() {
 			TileType tile = map_.GetTile(y, x);
 			if (tile == TileType::kInvalid) continue;
 			std::wstring glyph = TileGlyph(tile);
+			int pair = TileColorPair(tile);
+			attron(COLOR_PAIR(pair));
 			mvaddnwstr(y - cam_y_, x - cam_x_, glyph.c_str(), glyph.size());
+			attroff(COLOR_PAIR(pair));
 		}
 	}
+	attron(COLOR_PAIR(static_cast<int>(TileColorPairIndex::kPlayer)));
 	mvaddnwstr(player_.GetY()-cam_y_, player_.GetX()-cam_x_, L"@", 1);
+	attroff(COLOR_PAIR(static_cast<int>(TileColorPairIndex::kPlayer)));
 }
 
 void Game::RenderInventory() { // render after map
@@ -170,4 +157,13 @@ void Game::HandleChopTree() {
 	} else {
 		PushMessage(std::chrono::system_clock::now(), "Your inventory is too full to chop this tree.");
 	}
+}
+
+void Game::InitColours() {
+	init_pair(static_cast<int>(TileColorPairIndex::kFloor),     COLOR_WHITE,   COLOR_BLACK); // text colour, background colour
+    init_pair(static_cast<int>(TileColorPairIndex::kWall),      COLOR_WHITE,   COLOR_WHITE);
+    init_pair(static_cast<int>(TileColorPairIndex::kTree),      COLOR_GREEN,   COLOR_BLACK);
+    init_pair(static_cast<int>(TileColorPairIndex::kTreeStump), COLOR_YELLOW,  COLOR_BLACK);
+    init_pair(static_cast<int>(TileColorPairIndex::kPlayer),    COLOR_WHITE,   COLOR_BLACK);
+    init_pair(static_cast<int>(TileColorPairIndex::kDefault),   COLOR_WHITE,   COLOR_BLACK);
 }

@@ -21,3 +21,15 @@ TileType TileFromChar(char c) {
         default:   return TileType::kInvalid;
     }
 }
+
+int TileColorPair(TileType t) {
+    switch (t) {
+        case TileType::kFloor:       return static_cast<int>(TileColorPairIndex::kFloor);
+        case TileType::kWall:        return static_cast<int>(TileColorPairIndex::kWall);
+        case TileType::kTree:        return static_cast<int>(TileColorPairIndex::kTree);
+        case TileType::kTreeStump:   return static_cast<int>(TileColorPairIndex::kTreeStump);
+        case TileType::kPlayerStart: return static_cast<int>(TileColorPairIndex::kDefault);
+        case TileType::kInvalid:     return static_cast<int>(TileColorPairIndex::kDefault);
+    }
+    return static_cast<int>(TileColorPairIndex::kDefault);
+}
