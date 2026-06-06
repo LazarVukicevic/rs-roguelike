@@ -26,6 +26,7 @@ class Game {
         Game(const std::string& player_name, const std::string& file_name);
         void Run();
     private:
+        int tab_ = 1;
         void Render();
         void ProcessInput();
         void Update();
@@ -34,6 +35,7 @@ class Game {
         Coordinate GetCoordinate();
         void RenderMap();
         void RenderInventory();
+        void RenderSkillsTab();
         void HandleChopTree();
         void InitColours();
 

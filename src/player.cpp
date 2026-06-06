@@ -1,6 +1,9 @@
 #include "player.h"
 
 Player::Player(std::string player_name) : player_name_(player_name) {
+    for (const auto& [skill, data] : kAllSkills) {
+        skills_[skill] = data;
+    }
 }
 
 std::string Player::GetName() {
@@ -8,19 +11,31 @@ std::string Player::GetName() {
 }
 
 void Player::GainXp(Skill skill, int xp) {
-    skill_xp_map_[skill] += xp;
+    skills_[skill].xp += xp;
 }
 
 void Player::LevelUp(Skill skill) {
-    skill_level_map_[skill]++;
+    skills_[skill].level++;
 }
 
 int Player::GetXp(Skill skill) {
-    return skill_xp_map_[skill];
+    return skills_[skill].xp;
 }
 
 int Player::GetLevel(Skill skill) {
-    return skill_level_map_[skill];
+    return skills_[skill].level;
+}
+
+const std::unordered_map<Skill, SkillData>& Player::GetSkills() {
+    return skills_;
+}
+
+std::vector<std::string> Player::GetSkillNames() {
+    std::vector<std::string> names;
+    for (const auto& [skill, data] : kAllSkills) {
+        names.push_back(data.name);
+    }
+    return names;
 }
 
 Direction Player::GetDirection() {
@@ -65,4 +80,28 @@ int Player::GetX() {
 
 Inventory& Player::GetInventory() {
     return inventory_;
+}
+
+std::string Player::PrintInventory() {
+    if (inventory_.Size() == 0) {
+		return "Inventory is empty.";
+	}
+    std::string result;
+    for (const auto& item : inventory_) {
+        result += item.name + " x" + std::to_string(item.quantity) + "\n";
+    }
+    return result;
+}
+
+std::string Player::PrintInventory(int index) {
+    if (inventory_.Size() == 0) {
+		return "Inventory is empty.";
+	}
+	std::string result;
+	if (inventory_.Size() < (size_t)index) {
+		result += inventory_.end()->name + " x" + std::to_string(inventory_.end()->quantity) + "\n";
+	} else {
+		result += inventory_.atIndex(index).name + " x" + std::to_string(inventory_.atIndex(index).quantity);
+	}
+	return result;
 }

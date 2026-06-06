@@ -15,8 +15,6 @@ class PlayerController {
         void MoveLeft();
         void MoveRight();
         void MoveDown();
-        std::string PrintInventory();
-        std::string PrintInventory(int index);
         bool AddItemToInventory(const Item& item);
     private:
         bool IsTree();

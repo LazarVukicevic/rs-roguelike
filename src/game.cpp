@@ -66,6 +66,14 @@ void Game::ProcessInput() {
 				case 'm':
 					player_controller_.AddItemToInventory({"Copper ore"+std::to_string(std::rand()), 1}); // testing inventory display
 					break;
+				case '1':
+					tab_ = 1;
+					// inv tab
+					break;
+				case '2':
+					tab_ = 2;
+					// skills tab
+					break;
 			}
 }
 
@@ -83,7 +91,18 @@ void Game::Render() {
     
     clrtoeol();
 	RenderMap();
-	RenderInventory();
+	switch(tab_) {
+		case 1:
+			RenderInventory();
+			break;
+		case 2:
+			RenderSkillsTab();
+			break;
+		default:
+			RenderInventory();
+			break;
+	}
+	// RenderInventory();
 	refresh();
 
 }
@@ -141,7 +160,7 @@ void Game::RenderMap() {
 
 void Game::RenderInventory() { // render after map
 	for(int i = 0; (size_t)i < player_.GetInventory().Size(); i++) {
-		mvprintw(i, kViewWidth+35, "| %s", player_controller_.PrintInventory(i).c_str());
+		mvprintw(i, kViewWidth+35, "| %s", player_.PrintInventory(i).c_str());
 	}
 }
 
@@ -166,4 +185,13 @@ void Game::InitColours() {
     init_pair(static_cast<int>(TileColorPairIndex::kTreeStump), COLOR_YELLOW,  COLOR_BLACK);
     init_pair(static_cast<int>(TileColorPairIndex::kPlayer),    COLOR_WHITE,   COLOR_BLACK);
     init_pair(static_cast<int>(TileColorPairIndex::kDefault),   COLOR_WHITE,   COLOR_BLACK);
+}
+
+void Game::RenderSkillsTab() {
+	const auto& skills = player_.GetSkills();
+	int row = 0;
+	for (const auto& [skill, data] : kAllSkills) {
+		const SkillData& s = skills.at(skill);
+		mvprintw(row++, kViewWidth+35, "| %-12s Lvl: %d  XP: %d", s.name.c_str(), s.level, s.xp);
+	}
 }

@@ -13,20 +13,21 @@ enum class Skill {
     Mining
 };
 
+struct SkillData {
+    std::string name;
+    int level = 1;
+    int xp    = 0;
+};
 
-
+inline const std::vector<std::pair<Skill, SkillData>> kAllSkills = {
+    {Skill::Woodcutting, {"Woodcutting"}},
+    {Skill::Mining,      {"Mining"}},
+};
 
 class Player {
     Inventory inventory_;
     std::string player_name_;
-    std::unordered_map<Skill, int> skill_xp_map_ = {
-        {Skill::Woodcutting, 0},
-        {Skill::Mining, 0}
-    };
-    std::unordered_map<Skill, int> skill_level_map_ = {
-        {Skill::Woodcutting, 1},
-        {Skill::Mining, 1}
-    };
+    std::unordered_map<Skill, SkillData> skills_;
     int player_y_=-1;
     int player_x_=-1;
     Direction player_direction_ = Direction::Right; // default to right
@@ -37,6 +38,10 @@ class Player {
         void LevelUp(Skill skill);
         int GetXp(Skill skill);
         int GetLevel(Skill skill);
+        std::vector<std::string> GetSkillNames();
+        const std::unordered_map<Skill, SkillData>& GetSkills();
+        std::string PrintInventory(int index);
+        std::string PrintInventory();
         Direction GetDirection();
         std::string PrintDirection();
         void SetDirection(Direction new_direction);
