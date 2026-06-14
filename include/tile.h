@@ -10,6 +10,7 @@ enum class TileType {
     kTreeStump,
     kPlayerStart,
     kInvalid,
+    kBank
 };
 
 enum class TileColorPairIndex {
@@ -19,6 +20,7 @@ enum class TileColorPairIndex {
     kTreeStump  = 4,
     kPlayer     = 5,
     kDefault    = 6,
+    kBank       = 7
 };
 
 std::wstring TileGlyph(TileType t);

@@ -8,6 +8,7 @@ std::wstring TileGlyph(TileType t) {
         case TileType::kTreeStump:   return L"%";
         case TileType::kPlayerStart: return L"@";
         case TileType::kInvalid:     return L"`";
+        case TileType::kBank:        return L"ß";
     }
     return L"?";
 }
@@ -18,6 +19,7 @@ TileType TileFromChar(char c) {
         case '#':  return TileType::kWall;
         case 'T':  return TileType::kTree;
         case '@':  return TileType::kPlayerStart;
+        case 'B':  return TileType::kBank;
         default:   return TileType::kInvalid;
     }
 }
@@ -30,6 +32,7 @@ int TileColorPair(TileType t) {
         case TileType::kTreeStump:   return static_cast<int>(TileColorPairIndex::kTreeStump);
         case TileType::kPlayerStart: return static_cast<int>(TileColorPairIndex::kDefault);
         case TileType::kInvalid:     return static_cast<int>(TileColorPairIndex::kDefault);
+        case TileType::kBank:        return static_cast<int>(TileColorPairIndex::kBank);
     }
     return static_cast<int>(TileColorPairIndex::kDefault);
 }

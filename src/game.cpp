@@ -39,6 +39,7 @@ void Game::Run() {
 
 void Game::Update() {
 	spawn_manager_.Update();
+	DispatchEvents();
 }
 
 void Game::ProcessInput() {
@@ -64,7 +65,7 @@ void Game::ProcessInput() {
 					HandleChopTree();
 					break;
 				case 'm':
-					player_controller_.AddItemToInventory({"Copper ore"+std::to_string(std::rand()), 1}); // testing inventory display
+					player_.GetInventory().AddItem({"Copper ore"+std::to_string(std::rand()), 1}); // testing inventory display
 					break;
 				case '1':
 					tab_ = 1;
@@ -182,6 +183,7 @@ void Game::InitColours() {
     init_pair(static_cast<int>(TileColorPairIndex::kTreeStump), COLOR_YELLOW,  COLOR_BLACK);
     init_pair(static_cast<int>(TileColorPairIndex::kPlayer),    COLOR_WHITE,   COLOR_BLACK);
     init_pair(static_cast<int>(TileColorPairIndex::kDefault),   COLOR_WHITE,   COLOR_BLACK);
+	init_pair(static_cast<int>(TileColorPairIndex::kBank), 		COLOR_YELLOW,  COLOR_BLACK);
 }
 
 void Game::RenderSkillsTab() {
@@ -190,5 +192,16 @@ void Game::RenderSkillsTab() {
 	for (const auto& [skill, data] : kAllSkills) {
 		const SkillData& s = skills.at(skill);
 		mvprintw(row++, kViewWidth+35, "| %-12s Lvl: %d  XP: %d", s.name.c_str(), s.level, s.xp);
+	}
+}
+
+void Game::DispatchEvents() {
+	for (const GameEvent& event : player_.DrainEvents()) {
+		std::visit([this](auto&& e) {
+			using T = std::decay_t<decltype(e)>;
+			if constexpr (std::is_same_v<T, LevelUpEvent>) {
+				PushMessage(std::chrono::system_clock::now(), "Your " + e.skill_name + " level is now " + std::to_string(e.level) +".");
+			}
+		}, event);
 	}
 }

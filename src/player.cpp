@@ -21,6 +21,7 @@ void Player::GainXp(Skill skill, int xp) {
 void Player::LevelUp(Skill skill) {
     skills_[skill].level++;
     SetTargetXp(skill);
+    events_.push_back(LevelUpEvent{skills_[skill].name, skills_[skill].level});
 }
 
 int Player::GetXp(Skill skill) {
@@ -118,4 +119,10 @@ void Player::SetTargetXp(Skill skill) {
         sum += std::floor(n + 300.0 * std::pow(2.0, n / 7.0));
     }
     skills_[skill].xp_target = static_cast<int>(std::floor(sum / 4.0));
+}
+
+std::vector<GameEvent> Player::DrainEvents() {
+    std::vector<GameEvent> drained = std::move(events_);
+    events_.clear();
+    return drained;
 }
