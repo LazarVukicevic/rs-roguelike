@@ -3,6 +3,7 @@
 Player::Player(std::string player_name) : player_name_(player_name) {
     for (const auto& [skill, data] : kAllSkills) {
         skills_[skill] = data;
+        SetTargetXp(skill);
     }
 }
 
@@ -12,10 +13,14 @@ std::string Player::GetName() {
 
 void Player::GainXp(Skill skill, int xp) {
     skills_[skill].xp += xp;
+    while (skills_[skill].xp >= skills_[skill].xp_target) {
+        LevelUp(skill);
+    }
 }
 
 void Player::LevelUp(Skill skill) {
     skills_[skill].level++;
+    SetTargetXp(skill);
 }
 
 int Player::GetXp(Skill skill) {
@@ -104,4 +109,13 @@ std::string Player::PrintInventory(int index) {
 		result += inventory_.atIndex(index).name + " x" + std::to_string(inventory_.atIndex(index).quantity);
 	}
 	return result;
+}
+
+void Player::SetTargetXp(Skill skill) {
+    int level = skills_[skill].level;
+    double sum = 0.0;
+    for (int n = 1; n <= level; ++n) {
+        sum += std::floor(n + 300.0 * std::pow(2.0, n / 7.0));
+    }
+    skills_[skill].xp_target = static_cast<int>(std::floor(sum / 4.0));
 }
