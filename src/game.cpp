@@ -86,9 +86,6 @@ void Game::Render() {
 		mvprintw(kViewHeight+i+3, 0, "- %s -", message_list_[i].c_str());
 	}
     
-    std::string xp = std::to_string(player_.GetXp(Skill::Woodcutting)).c_str();
-	mvprintw(kViewHeight+8, 0, "%s", xp.c_str()); // demo
-    
     clrtoeol();
 	RenderMap();
 	switch(tab_) {
@@ -102,7 +99,6 @@ void Game::Render() {
 			RenderInventory();
 			break;
 	}
-	// RenderInventory();
 	refresh();
 
 }
@@ -170,6 +166,7 @@ void Game::HandleChopTree() {
 		Coordinate coord = GetCoordinate();
 		map_.SetTile(coord.y, coord.x, TileType::kTreeStump);
 		spawn_manager_.ScheduleRespawn(coord.y, coord.x, TileType::kTree, 5);
+		
 		PushMessage(std::chrono::system_clock::now(), "You chop down the tree.");
 	} else if (ch == State::kIsNotTree){
 		PushMessage(std::chrono::system_clock::now(), "There are no trees nearby to chop down.");

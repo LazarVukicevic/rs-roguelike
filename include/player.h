@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <cmath>
 
 #include "direction.h"
 #include "inventory.h"
@@ -16,7 +17,8 @@ enum class Skill {
 struct SkillData {
     std::string name;
     int level = 1;
-    int xp    = 0;
+    int xp_target = 0;
+    int xp = 0;
 };
 
 inline const std::vector<std::pair<Skill, SkillData>> kAllSkills = {
@@ -50,6 +52,7 @@ class Player {
         void SetY(int new_y);
         void SetX(int new_x);
         Inventory& GetInventory();
+        void SetTargetXp(Skill skill);
 
 };
 

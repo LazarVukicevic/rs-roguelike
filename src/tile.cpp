@@ -4,8 +4,8 @@ std::wstring TileGlyph(TileType t) {
     switch (t) {
         case TileType::kFloor:       return L" ";
         case TileType::kWall:        return L"#";
-        case TileType::kTree:        return L"T";
-        case TileType::kTreeStump:   return L"ףּ";
+        case TileType::kTree:        return L"♣";
+        case TileType::kTreeStump:   return L"%";
         case TileType::kPlayerStart: return L"@";
         case TileType::kInvalid:     return L"`";
     }
