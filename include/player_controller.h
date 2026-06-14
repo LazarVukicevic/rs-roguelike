@@ -15,7 +15,7 @@ class PlayerController {
         void MoveLeft();
         void MoveRight();
         void MoveDown();
-        bool AddItemToInventory(const Item& item);
+        // bool AddItemToInventory(const Item& item);
     private:
         bool IsTree();
 };

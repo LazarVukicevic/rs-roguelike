@@ -46,6 +46,6 @@ void PlayerController::MoveRight() {
 	}
 }
 
-bool PlayerController::AddItemToInventory(const Item& item) {
-	return player_.GetInventory().AddItem(item);
-}
+// bool PlayerController::AddItemToInventory(const Item& item) {
+// 	return player_.GetInventory().AddItem(item);
+// }

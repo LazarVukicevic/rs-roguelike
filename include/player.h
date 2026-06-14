@@ -6,6 +6,7 @@
 #include <vector>
 #include <cmath>
 
+#include "events.h"
 #include "direction.h"
 #include "inventory.h"
 
@@ -30,6 +31,7 @@ class Player {
     Inventory inventory_;
     std::string player_name_;
     std::unordered_map<Skill, SkillData> skills_;
+    std::vector<GameEvent> events_;
     int player_y_=-1;
     int player_x_=-1;
     Direction player_direction_ = Direction::Right; // default to right
@@ -42,6 +44,7 @@ class Player {
         int GetLevel(Skill skill);
         std::vector<std::string> GetSkillNames();
         const std::unordered_map<Skill, SkillData>& GetSkills();
+        std::vector<GameEvent> DrainEvents();
         std::string PrintInventory(int index);
         std::string PrintInventory();
         Direction GetDirection();
