@@ -1,5 +1,6 @@
 enum class State {
-    kInventoryFull,
+    kInventoryFullLogs,
+    kInventoryFullCopperOre,
     kIsNotTree,
     kIsNotRock,
     kNothingToInteract,

@@ -162,18 +162,6 @@ void Game::RenderInventory() { // render after map
 }
 
 void Game::HandleChopTree() {
-	// State ch = player_controller_.ChopTree();
-	// if(ch == State::kSuccessChopTree) {
-	// 	Coordinate coord = GetCoordinate();
-	// 	map_.SetTile(coord.y, coord.x, TileType::kTreeStump);
-	// 	spawn_manager_.ScheduleRespawn(coord.y, coord.x, TileType::kTree, 5);
-		
-	// 	PushMessage(std::chrono::system_clock::now(), "You chop down the tree.");
-	// } else if (ch == State::kIsNotTree){
-	// 	PushMessage(std::chrono::system_clock::now(), "There are no trees nearby to chop down.");
-	// } else {
-	// 	PushMessage(std::chrono::system_clock::now(), "Your inventory is too full to carry any more logs.");
-	// }
 	Coordinate coord = GetCoordinate();
 	map_.SetTile(coord.y, coord.x, TileType::kTreeStump);
 	spawn_manager_.ScheduleRespawn(coord.y, coord.x, TileType::kTree, 5);
@@ -195,6 +183,15 @@ void Game::HandleInteract() {
 			break;
 		case State::kSuccessMineRock:
 			HandleMineRock();
+			break;
+		case State::kInventoryFullLogs:
+			PushMessage(std::chrono::system_clock::now(), "Your inventory is too full to carry any more logs.");
+			break;
+		case State::kInventoryFullCopperOre:
+			PushMessage(std::chrono::system_clock::now(), "Your inventory is too full to carry any more ore.");
+			break;
+		case State::kNothingToInteract:
+			PushMessage(std::chrono::system_clock::now(), "Nothing interesting happens.");
 			break;
 	}
 }

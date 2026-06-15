@@ -6,7 +6,7 @@ std::wstring TileGlyph(TileType t) {
         case TileType::kWall:        return L"#";
         case TileType::kTree:        return L"♣";
         case TileType::kTreeStump:   return L"%";
-        case TileType::kPlayerStart: return L"☺︎";
+        case TileType::kPlayerStart: return L"☺";
         case TileType::kInvalid:     return L"`";
         case TileType::kBank:        return L"ß";
         case TileType::kRock:        return L"▲";

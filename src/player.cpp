@@ -105,9 +105,15 @@ std::string Player::PrintInventory(int index) {
 	}
 	std::string result;
 	if (inventory_.Size() < (size_t)index) {
-		result += inventory_.end()->name + " x" + std::to_string(inventory_.end()->quantity) + "\n";
+        if (inventory_.atIndex(index).stackable) {
+            result += inventory_.end()->name + " x" + std::to_string(inventory_.end()->quantity) + "\n";
+        }
+        result += inventory_.end()->name + "\n";
 	} else {
-		result += inventory_.atIndex(index).name + " x" + std::to_string(inventory_.atIndex(index).quantity);
+        if (inventory_.atIndex(index).stackable) {
+		    result += inventory_.atIndex(index).name + " x" + std::to_string(inventory_.atIndex(index).quantity);
+        }
+        result += inventory_.atIndex(index).name + "\n";
 	}
 	return result;
 }

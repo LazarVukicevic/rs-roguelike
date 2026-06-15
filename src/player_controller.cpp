@@ -12,7 +12,7 @@ State PlayerController::ChopTree() {
 	// 	return State::kIsNotTree;
 	// }
 	if (!player_.GetInventory().AddItem({"Logs", 1})) {
-		return State::kInventoryFull;
+		return State::kInventoryFullLogs;
 	}
     player_.GainXp(Skill::Woodcutting, 25);
 	return State::kSuccessChopTree;
@@ -20,7 +20,7 @@ State PlayerController::ChopTree() {
 
 State PlayerController::MineRock() {
 	if (!player_.GetInventory().AddItem({"Copper Ore", 1})) {
-		return State::kInventoryFull;
+		return State::kInventoryFullCopperOre;
 	}
 	player_.GainXp(Skill::Mining, 18);
 	return State::kSuccessMineRock;

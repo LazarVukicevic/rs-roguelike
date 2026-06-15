@@ -7,8 +7,11 @@ bool Inventory::IsFull() {
 bool Inventory::AddItem(const Item& item) {
     for (auto it = inventory_.begin(); it != inventory_.end(); ++it) {
         if (it->name == item.name) {
-            it->quantity++;
-            return true;
+            if (item.stackable) {
+                it->quantity++;
+                return true;
+            }
+            break;
         }
     }
     if (IsFull()) {
