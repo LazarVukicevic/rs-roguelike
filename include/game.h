@@ -38,7 +38,10 @@ class Game {
         void RenderInventory();
         void RenderSkillsTab();
         void HandleChopTree();
+        void HandleMineRock();
+        void HandleInteract();
         void InitColours();
+        State Interact();
 
 
 

@@ -1,5 +1,8 @@
 enum class State {
     kInventoryFull,
     kIsNotTree,
-    kSuccess
+    kIsNotRock,
+    kNothingToInteract,
+    kSuccessChopTree,
+    kSuccessMineRock
 };
