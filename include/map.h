@@ -21,6 +21,8 @@ class Map {
         int GetHeight();
         int GetWidth();
         int GetWidth(int row);
+        bool IsTree(Coordinate coords);
+        bool IsRock(Coordinate coords);
     
 };
 

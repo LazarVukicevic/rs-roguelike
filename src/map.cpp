@@ -79,3 +79,11 @@ int Map::GetWidth() {
 int Map::GetWidth(int row) {
 	return map_[row].size();
 }
+
+bool Map::IsTree(Coordinate coords) {
+	return map_[coords.y][coords.x] == TileType::kTree;
+}
+
+bool Map::IsRock(Coordinate coords) {
+	return map_[coords.y][coords.x] == TileType::kRock;
+}

@@ -8,14 +8,22 @@ bool PlayerController::IsTree() {
 }
 
 State PlayerController::ChopTree() {
-	if(!IsTree()) {
-		return State::kIsNotTree;
-	}
+	// if(!IsTree()) {
+	// 	return State::kIsNotTree;
+	// }
 	if (!player_.GetInventory().AddItem({"Logs", 1})) {
 		return State::kInventoryFull;
 	}
     player_.GainXp(Skill::Woodcutting, 25);
-	return State::kSuccess;
+	return State::kSuccessChopTree;
+}
+
+State PlayerController::MineRock() {
+	if (!player_.GetInventory().AddItem({"Copper Ore", 1})) {
+		return State::kInventoryFull;
+	}
+	player_.GainXp(Skill::Mining, 18);
+	return State::kSuccessMineRock;
 }
 
 void PlayerController::MoveUp() {
@@ -46,6 +54,15 @@ void PlayerController::MoveRight() {
 	}
 }
 
-// bool PlayerController::AddItemToInventory(const Item& item) {
-// 	return player_.GetInventory().AddItem(item);
-// }
+State PlayerController::Interact() {
+	TileType target = map_.GetAdjacentTile(player_.GetY(), player_.GetX(), player_.GetDirection());
+
+	switch(target) {
+		case TileType::kTree: 
+			return ChopTree();
+		case TileType::kRock: 
+			return MineRock();
+		default:
+			return State::kNothingToInteract;
+	}
+}

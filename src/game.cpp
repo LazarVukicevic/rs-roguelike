@@ -61,8 +61,8 @@ void Game::ProcessInput() {
 				case 'q':
 					running_ = false;
 					break;
-				case 'c':
-					HandleChopTree();
+				case 'e':
+					HandleInteract();
 					break;
 				case 'm':
 					player_.GetInventory().AddItem({"Copper ore"+std::to_string(std::rand()), 1}); // testing inventory display
@@ -151,7 +151,7 @@ void Game::RenderMap() {
 		}
 	}
 	attron(COLOR_PAIR(static_cast<int>(TileColorPairIndex::kPlayer)));
-	mvaddnwstr(player_.GetY()-cam_y_, player_.GetX()-cam_x_, L"@", 1);
+	mvaddnwstr(player_.GetY()-cam_y_, player_.GetX()-cam_x_, TileGlyph(TileType::kPlayerStart).c_str(), 1);
 	attroff(COLOR_PAIR(static_cast<int>(TileColorPairIndex::kPlayer)));
 }
 
@@ -162,17 +162,40 @@ void Game::RenderInventory() { // render after map
 }
 
 void Game::HandleChopTree() {
-	State ch = player_controller_.ChopTree();
-	if(ch == State::kSuccess) {
-		Coordinate coord = GetCoordinate();
-		map_.SetTile(coord.y, coord.x, TileType::kTreeStump);
-		spawn_manager_.ScheduleRespawn(coord.y, coord.x, TileType::kTree, 5);
+	// State ch = player_controller_.ChopTree();
+	// if(ch == State::kSuccessChopTree) {
+	// 	Coordinate coord = GetCoordinate();
+	// 	map_.SetTile(coord.y, coord.x, TileType::kTreeStump);
+	// 	spawn_manager_.ScheduleRespawn(coord.y, coord.x, TileType::kTree, 5);
 		
-		PushMessage(std::chrono::system_clock::now(), "You chop down the tree.");
-	} else if (ch == State::kIsNotTree){
-		PushMessage(std::chrono::system_clock::now(), "There are no trees nearby to chop down.");
-	} else {
-		PushMessage(std::chrono::system_clock::now(), "Your inventory is too full to chop this tree.");
+	// 	PushMessage(std::chrono::system_clock::now(), "You chop down the tree.");
+	// } else if (ch == State::kIsNotTree){
+	// 	PushMessage(std::chrono::system_clock::now(), "There are no trees nearby to chop down.");
+	// } else {
+	// 	PushMessage(std::chrono::system_clock::now(), "Your inventory is too full to carry any more logs.");
+	// }
+	Coordinate coord = GetCoordinate();
+	map_.SetTile(coord.y, coord.x, TileType::kTreeStump);
+	spawn_manager_.ScheduleRespawn(coord.y, coord.x, TileType::kTree, 5);
+	PushMessage(std::chrono::system_clock::now(), "You chop down the tree.");
+}
+
+void Game::HandleMineRock() {
+	Coordinate coord = GetCoordinate();
+	map_.SetTile(coord.y, coord.x, TileType::kTreeStump);
+	spawn_manager_.ScheduleRespawn(coord.y, coord.x, TileType::kRock, 5);
+	PushMessage(std::chrono::system_clock::now(), "You manage to mine some copper.");
+}
+
+void Game::HandleInteract() {
+	State target = player_controller_.Interact();
+	switch(target) {
+		case State::kSuccessChopTree:
+			HandleChopTree();
+			break;
+		case State::kSuccessMineRock:
+			HandleMineRock();
+			break;
 	}
 }
 
@@ -184,6 +207,7 @@ void Game::InitColours() {
     init_pair(static_cast<int>(TileColorPairIndex::kPlayer),    COLOR_WHITE,   COLOR_BLACK);
     init_pair(static_cast<int>(TileColorPairIndex::kDefault),   COLOR_WHITE,   COLOR_BLACK);
 	init_pair(static_cast<int>(TileColorPairIndex::kBank), 		COLOR_YELLOW,  COLOR_BLACK);
+	init_pair(static_cast<int>(TileColorPairIndex::kRock),		COLOR_MAGENTA,  COLOR_BLACK);
 }
 
 void Game::RenderSkillsTab() {

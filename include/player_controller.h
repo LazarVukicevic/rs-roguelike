@@ -11,10 +11,12 @@ class PlayerController {
     public:
         PlayerController(Player& player, Map& map);
         State ChopTree();
+        State MineRock();
         void MoveUp();
         void MoveLeft();
         void MoveRight();
         void MoveDown();
+        State Interact();
         // bool AddItemToInventory(const Item& item);
     private:
         bool IsTree();
