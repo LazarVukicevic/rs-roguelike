@@ -93,8 +93,8 @@ std::string Player::PrintInventory() {
 		return "Inventory is empty.";
 	}
     std::string result;
-    for (const auto& item : inventory_) {
-        result += item.name + " x" + std::to_string(item.quantity) + "\n";
+    for (const auto& stack : inventory_) {
+        result += stack.def->name + " x" + std::to_string(stack.quantity) + "\n";
     }
     return result;
 }
@@ -105,15 +105,17 @@ std::string Player::PrintInventory(int index) {
 	}
 	std::string result;
 	if (inventory_.Size() < (size_t)index) {
-        if (inventory_.atIndex(index).stackable) {
-            result += inventory_.end()->name + " x" + std::to_string(inventory_.end()->quantity) + "\n";
+        if (inventory_.atIndex(index).def->stackable) {
+            result += inventory_.end()->def->name + " x" + std::to_string(inventory_.end()->quantity) + "\n";
+        } else {
+            result += inventory_.end()->def->name + "\n";
         }
-        result += inventory_.end()->name + "\n";
 	} else {
-        if (inventory_.atIndex(index).stackable) {
-		    result += inventory_.atIndex(index).name + " x" + std::to_string(inventory_.atIndex(index).quantity);
+        if (inventory_.atIndex(index).def->stackable) {
+		    result += inventory_.atIndex(index).def->name + " x" + std::to_string(inventory_.atIndex(index).quantity);
+        } else {
+            result += inventory_.atIndex(index).def->name + "\n";
         }
-        result += inventory_.atIndex(index).name + "\n";
 	}
 	return result;
 }

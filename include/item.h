@@ -1,7 +1,17 @@
+#ifndef ITEM_H
+#define ITEM_H
+
 #include <string>
 
-struct Item {
+struct ItemDef {
     std::string name;
-    int quantity;
     bool stackable = false;
+    int value = 1; // alch value, store value
 };
+
+struct ItemStack {
+    const ItemDef* def;
+    int quantity;
+};
+
+#endif

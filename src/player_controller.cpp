@@ -1,4 +1,5 @@
 #include "player_controller.h"
+#include "items.h"
 
 PlayerController::PlayerController(Player& player, Map& map) : player_(player), map_(map) { }
 
@@ -11,7 +12,7 @@ State PlayerController::ChopTree() {
 	// if(!IsTree()) {
 	// 	return State::kIsNotTree;
 	// }
-	if (!player_.GetInventory().AddItem({"Logs", 1})) {
+	if (!player_.GetInventory().AddItem(items::kLogs)) {
 		return State::kInventoryFullLogs;
 	}
     player_.GainXp(Skill::Woodcutting, 25);
@@ -19,7 +20,7 @@ State PlayerController::ChopTree() {
 }
 
 State PlayerController::MineRock() {
-	if (!player_.GetInventory().AddItem({"Copper Ore", 1})) {
+	if (!player_.GetInventory().AddItem(items::kCopperOre)) {
 		return State::kInventoryFullCopperOre;
 	}
 	player_.GainXp(Skill::Mining, 18);

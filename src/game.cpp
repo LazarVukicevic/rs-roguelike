@@ -1,5 +1,6 @@
 #include "game.h"
 #include "tile.h"
+#include "items.h"
 
 #include <locale.h>
 #include <signal.h>
@@ -65,7 +66,7 @@ void Game::ProcessInput() {
 					HandleInteract();
 					break;
 				case 'm':
-					player_.GetInventory().AddItem({"Copper ore"+std::to_string(std::rand()), 1}); // testing inventory display
+					player_.GetInventory().AddItem(items::kCoins, 50); // testing inventory display
 					break;
 				case '1':
 					tab_ = 1;
