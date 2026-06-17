@@ -1,6 +1,6 @@
 #include "game.h"
 #include "tile.h"
-#include "items.h"
+#include "item_database.h"
 
 #include <locale.h>
 #include <signal.h>
@@ -205,7 +205,7 @@ void Game::InitColours() {
     init_pair(static_cast<int>(TileColorPairIndex::kPlayer),    COLOR_WHITE,   COLOR_BLACK);
     init_pair(static_cast<int>(TileColorPairIndex::kDefault),   COLOR_WHITE,   COLOR_BLACK);
 	init_pair(static_cast<int>(TileColorPairIndex::kBank), 		COLOR_YELLOW,  COLOR_BLACK);
-	init_pair(static_cast<int>(TileColorPairIndex::kRock),		COLOR_MAGENTA,  COLOR_BLACK);
+	init_pair(static_cast<int>(TileColorPairIndex::kRock),		COLOR_MAGENTA, COLOR_BLACK);
 }
 
 void Game::RenderSkillsTab() {

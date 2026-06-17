@@ -7,7 +7,7 @@ bool Inventory::IsFull() {
 bool Inventory::AddItem(const ItemDef& def, int amount) {
     if (def.stackable) {
         for (auto& stack : inventory_) {
-            if (stack.def->name == def.name) {
+            if (stack.def == &def) {
                 stack.quantity += amount;
                 return true;
             }
@@ -20,9 +20,9 @@ bool Inventory::AddItem(const ItemDef& def, int amount) {
     return true;
 }
 
-bool Inventory::RemoveItem(const std::string& name, int quantity) {
+bool Inventory::RemoveItem(const ItemDef& def, int quantity) {
     for (auto it = inventory_.begin(); it != inventory_.end(); ++it) {
-        if (it->def->name == name) {
+        if (it->def == &def) {
             if (it->quantity > quantity) {
                 it->quantity -= quantity;
             } else {

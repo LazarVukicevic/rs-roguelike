@@ -1,5 +1,5 @@
-#ifndef ITEMS_H
-#define ITEMS_H
+#ifndef ITEM_DATABASE_H
+#define ITEM_DATABASE_H
 
 #include "item.h"
 

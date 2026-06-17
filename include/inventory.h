@@ -3,14 +3,13 @@
 
 #include <vector>
 #include "item.h"
-#include <string>
 
 class Inventory {
     std::vector<ItemStack> inventory_;
     public:
         const size_t kMaxSlots = 28;
         bool AddItem(const ItemDef& def, int amount = 1);
-        bool RemoveItem(const std::string& name, int quantity = 1);
+        bool RemoveItem(const ItemDef& def, int quantity = 1);
         bool IsFull();
         auto begin()       { return inventory_.begin(); }
         auto end()         { return inventory_.end(); }

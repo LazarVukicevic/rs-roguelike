@@ -1,5 +1,5 @@
 #include "player_controller.h"
-#include "items.h"
+#include "item_database.h"
 
 PlayerController::PlayerController(Player& player, Map& map) : player_(player), map_(map) { }
 
@@ -9,9 +9,6 @@ bool PlayerController::IsTree() {
 }
 
 State PlayerController::ChopTree() {
-	// if(!IsTree()) {
-	// 	return State::kIsNotTree;
-	// }
 	if (!player_.GetInventory().AddItem(items::kLogs)) {
 		return State::kInventoryFullLogs;
 	}
