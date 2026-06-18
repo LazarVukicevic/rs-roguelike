@@ -4,9 +4,12 @@
 #include "item.h"
 
 namespace items {
-inline const ItemDef kLogs          {"Logs", false};
-inline const ItemDef kCopperOre     {"Copper Ore", false};
-inline const ItemDef kCoins         {"Coins", true};
+    inline const ItemDef kLogs              {"Logs", false, 4};
+    inline const ItemDef kCopperOre         {"Copper Ore", false, 3};
+    inline const ItemDef kCoins             {"Coins", true};
+    inline const ItemDef kBronzeAxe         {"Bronze Axe", false, 16};
+    inline const ItemDef kBronzePickaxe     {"Bronze Pickaxe", false};
+    inline const ItemDef kTinderbox         {"Tinderbox", false};
 }
 
 #endif
